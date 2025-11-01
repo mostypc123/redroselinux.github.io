@@ -24,33 +24,39 @@ pre, code {
 }
   </style>
   <meta charset="UTF-8">
-  <title>Car Package Manager</title>
+  <title>Car Package Manager — Redrose Linux</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <header class="navbar" id="navbar">
-      <img src="assets/redrose-logo-transparent.png" height="40" width="40"><p>Redrose Linux <a href="./docs.html" style="color:rgb(255,60,60)">Docs</a> <a href="https://github.com/redroselinux/" style="color:rgb(255,60,60)">Github</a> <a href=".waitlist" style="color:rgb(255,60,60)">Waitlist</a></p>
-    </header>
+<header class="navbar" id="navbar">
+  <img src="assets/redrose-logo-transparent.png" height="40" width="40" alt="Redrose Linux logo">
+  <p>
+    Redrose Linux 
+    <a href="./docs.html" style="color:rgb(255,60,60)">Docs</a>
+    <a href="https://github.com/redroselinux/" style="color:rgb(255,60,60)">GitHub</a>
+    <a href=".waitlist" style="color:rgb(255,60,60)">Waitlist</a>
+  </p>
+</header>
 
 <section>
-  <h1>Car</h1>
-  <p>Package manager for Redrose Linux.</p>
+  <h1>Car Package Manager</h1>
+  <p>Car is the official package manager for Redrose Linux.</p>
 
-  <h2>Roadmap</h2>
-  <ul>
-    <li>[x] Basic functionality</li>
-    <li>[x] Basic versioning</li>
-    <li>[ ] More advanced versioning</li>
-    <li>[x] Mirrors</li>
-    <li>[x] Website with all packages</li>
-    <li>[ ] .car tarballs for offline install</li>
-  </ul>
+  <h2>Getting Started</h2>
+  <p>Initialize Car before using it:</p>
+  <pre><code>car init</code></pre>
+  <p>This creates Car’s configuration directory and required files.</p>
 
-  <h2>Syntax</h2>
-  <pre><code>car get|delete|update|search|updatelist|init
+  <p>Update the package list regularly to keep your system synced with mirrors:</p>
+  <pre><code>car updatelist</code></pre>
+  <p>Running this every few days ensures you always have the latest package information.</p>
 
-car get &lt;package&gt; [--noconfirm]
+  <p>Installed packages are tracked at:</p>
+  <pre><code>~/.config/repro.car</code></pre>
+
+  <h2>Basic Commands</h2>
+  <pre><code>car get &lt;package&gt; [--noconfirm]
 car delete &lt;package&gt;
 car update &lt;package&gt;
 car search &lt;package&gt;
@@ -58,43 +64,67 @@ car updatelist
 car init
 </code></pre>
 
-  <h2>Creating Hooks</h2>
-  <ol>
-    <li>Add file to <code>.config/car/post-inst-hooks</code></li>
-    <li>Create the file</li>
-  </ol>
-  The only required function in run(). That is the function, that will be ran, obviously.
+  <ul>
+    <li><code>car get &lt;package&gt;</code> — Installs a package.</li>
+    <li><code>car delete &lt;package&gt;</code> — Removes a package.</li>
+    <li><code>car update &lt;package&gt;</code> — <i>Currently not supported</i></li>
+    <li><code>car search &lt;package&gt;</code> — Searches mirrors for available packages.</li>
+    <li><code>car updatelist</code> — Updates your local package list.</li>
+    <li><code>car init</code> — Initializes configuration directories and hooks.</li>
+  </ul>
 
-  <h2>Making Repos</h2>
-  <p>Open the file at /home/user/.config/mirrors.car. You will see things similar to this:</p>
+  <h2>Reinstalling Packages</h2>
+  <p>Car reinstalls only when updates are available.  
+  To force reinstall a package manually, run:</p>
+  <pre><code>sudo car delete &lt;package&gt;
+sudo car get &lt;package&gt;
+</code></pre>
+
+  <h2>Autocorrection</h2>
+  <p>Car can correct typos in package names. If a requested name doesn’t match exactly, Car installs the closest known match.</p>
+  <pre><code>redrose% car get firfox
+Note: Using firefox instead of firfox
+</code></pre>
+
+  <h2>Hooks</h2>
+  <p>Hooks allow automatic actions after installation.  
+  To create one:</p>
+  <ol>
+    <li>Add a file to <code>~/.config/car/post-inst-hooks</code>.</li>
+    <li>Define a <code>run(package)</code> function inside that file.</li>
+  </ol>
+
+  <h2>Repositories</h2>
+  <p>Repository definitions are stored in <code>~/.config/mirrors.car</code>.</p>
   <pre><code>:base:
 install_script = https://raw.githubusercontent.com/crust-project/car-binary-storage/main/
 packagelist = https://raw.githubusercontent.com/crust-project/car/main/existing-packages.txt
 :end:
 </code></pre>
-<p>Copy and paste one of the repos. To set up a repo, you need:
+
+  <p>Each repository requires:</p>
   <ul>
-    <li>Package list</li>
-    <li>Actual packages</li>
+    <li>A package list (text file, one package per line).</li>
+    <li>A directory containing package installation scripts.</li>
   </ul>
-<p>The package list is easy to set up. Make a file that will have the packages,
-  divided by a newline. Example: </p>
+
+  <p>Example package list:</p>
   <pre><code>package1
 package2
 package3
 </code></pre>
-  <p>Edit the packagelist value in mirrors.car.</p>
-  <p>This can be basically any URL that CURL supports. Which means you can use file://, yes.</p>
-  
-  <p>The install scripts are gonna be a directory, where are other directories named by the packages that own them.</p>
-  <code><pre>my-repo>
-    my-package>
-        install_script <- See #Creating Packages
-        index.html <- Docs for the package
-    </pre></code>
-    </p>Again, this can be file://, so yes, you can make a fully local repo.
+
+  <p>Car supports URLs and local paths (using <code>file://</code>), so you can create local repositories.</p>
+
+  <h3>Example Repository Layout</h3>
+  <pre><code>my-repo/
+  my-package/
+    install_script
+    index.html
+</code></pre>
+
   <h2>Creating Packages</h2>
-  <p>Create a file named <code>install_script</code>.</p>
+  <p>Each package must have an <code>install_script</code>. Example:</p>
   <pre><code>version = "0.0.1"
 
 def beforeinst():
@@ -113,19 +143,29 @@ def postinst():
     pass
 </code></pre>
 
+  <ul>
+    <li><code>beforeinst()</code> — Runs before installation.</li>
+    <li><code>deps()</code> — Handles dependencies.</li>
+    <li><code>build()</code> — Builds the package if needed.</li>
+    <li><code>install()</code> — Installs package files.</li>
+    <li><code>postinst()</code> — Executes after installation finishes.</li>
+  </ul>
+
   <h2>Submitting Packages</h2>
   <ol>
-    <li>Fork <code>car-binary-storage</code></li>
-    <li>Create a package directory with <code>install_script</code></li>
-    <li>Follow naming rules (-bin, -git, -stable)</li>
-    <li>Submit a pull request</li>
+    <li>Fork <code>car-binary-storage</code> on GitHub.</li>
+    <li>Create a new directory for your package and add your <code>install_script</code>.</li>
+    <li>Follow naming conventions (<code>-bin</code>, <code>-git</code>, <code>-stable</code>).</li>
+    <li>Submit a pull request.</li>
   </ol>
-
-  <p><a href="docs.html" style="color:rgb(255,60,60)">← Back to Docs Home</a></p>
+ <p><a href="docs.html" style="color:rgb(255,60,60)">← Back to Docs Home</a></p>
 </section>
+
 <center>
-     Our documentation is open source. You can help by contributing!
+  <p>Our documentation is open source. You can help by contributing.</p>
   <button onclick="window.open('https://github.com/redroselinux/redroselinux.github.io', '_blank')">Contribute</button>
 </center>
+
 </body>
 </html>
+
