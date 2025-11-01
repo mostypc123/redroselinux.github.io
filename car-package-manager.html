@@ -45,18 +45,18 @@ pre, code {
 
   <h2>Getting Started</h2>
   <p>Initialize Car before using it:</p>
-  <pre><code>car init</code></pre>
+  <pre>command<code>car init</code></pre>
   <p>This creates Car’s configuration directory and required files.</p>
 
   <p>Update the package list regularly to keep your system synced with mirrors:</p>
-  <pre><code>car updatelist</code></pre>
+  <pre>command<code>car updatelist</code></pre>
   <p>Running this every few days ensures you always have the latest package information.</p>
 
   <p>Installed packages are tracked at:</p>
-  <pre><code>~/.config/repro.car</code></pre>
+  <pre>directory<code>~/.config/repro.car</code></pre>
 
   <h2>Basic Commands</h2>
-  <pre><code>car get &lt;package&gt; [--noconfirm]
+  <pre>command<code>car get &lt;package&gt; [--noconfirm]
 car delete &lt;package&gt;
 car update &lt;package&gt;
 car search &lt;package&gt;
@@ -76,13 +76,13 @@ car init
   <h2>Reinstalling Packages</h2>
   <p>Car reinstalls only when updates are available.  
   To force reinstall a package manually, run:</p>
-  <pre><code>sudo car delete &lt;package&gt;
+  <pre>command<code>sudo car delete &lt;package&gt;
 sudo car get &lt;package&gt;
 </code></pre>
 
   <h2>Autocorrection</h2>
   <p>Car can correct typos in package names. If a requested name doesn’t match exactly, Car installs the closest known match.</p>
-  <pre><code>redrose% car get firfox
+  <pre>command with output<code>redrose% car get firfox
 Note: Using firefox instead of firfox
 </code></pre>
 
@@ -96,7 +96,7 @@ Note: Using firefox instead of firfox
 
   <h2>Repositories</h2>
   <p>Repository definitions are stored in <code>~/.config/mirrors.car</code>.</p>
-  <pre><code>:base:
+  <pre>code<code>:base:
 install_script = https://raw.githubusercontent.com/crust-project/car-binary-storage/main/
 packagelist = https://raw.githubusercontent.com/crust-project/car/main/existing-packages.txt
 :end:
@@ -109,7 +109,7 @@ packagelist = https://raw.githubusercontent.com/crust-project/car/main/existing-
   </ul>
 
   <p>Example package list:</p>
-  <pre><code>package1
+  <pre>text<code>package1
 package2
 package3
 </code></pre>
@@ -117,7 +117,7 @@ package3
   <p>Car supports URLs and local paths (using <code>file://</code>), so you can create local repositories.</p>
 
   <h3>Example Repository Layout</h3>
-  <pre><code>my-repo/
+  <pre>tree<code>my-repo/
   my-package/
     install_script
     index.html
@@ -125,7 +125,7 @@ package3
 
   <h2>Creating Packages</h2>
   <p>Each package must have an <code>install_script</code>. Example:</p>
-  <pre><code>version = "0.0.1"
+  <pre>code<code>version = "0.0.1"
 
 def beforeinst():
     print("Runs before installation")
