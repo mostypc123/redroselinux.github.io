@@ -42,45 +42,47 @@ pre, code {
 <section>
   <h1>Installation Guide</h1>
   <p>
-    To install Redrose Linux, you must first 
+    To install Redrose Linux, the first step is to 
     <a href="https://github.com/redroselinux/redroselinux/releases" style="color:rgb(255,60,60)">download</a> 
-    a so-called disk image. This disk image will be about 1.5 to 2 gigabytes, which is less than a standard distro.
+    the disk image. The image size is approximately 1.5-2 GB, which is smaller than most standard distributions.
   </p>
   <p>
-    Next up, you have to flash the disk image into a drive. So take a USB drive, or whatever removable drive, and connect it to your current device.
+    After downloading, you need to flash the disk image onto a USB drive or another removable drive. Connect the drive to your current device before proceeding.
   </p>
   <p>
-    <strong>On Windows:</strong> Download 
+    On Windows, download 
     <a href="https://rufus.ie/en/#download" style="color:rgb(255,60,60)">Rufus</a> 
-    and follow instructions. All you have to do is select the disk image and the removable drive.
+    and follow the instructions. Simply select the downloaded disk image and your removable drive, then start the flashing process.
   </p>
   <p>
-    <strong>On Linux:</strong> run:
+    On Linux, run the following command in a terminal:
     <code>sudo dd if=~/Downloads/redroselinux.iso of=/dev/sdX bs=4M status=progress && sync</code>
-    <strong>REPLACE /dev/sdX WITH YOUR REMOVABLE DRIVE!</strong>
+    <strong>Make sure to replace /dev/sdX with the correct device name for your removable drive!</strong>
   </p>
   <p>
-    Next, we will have to boot the USB. To do that, reboot your device, and try pressing these keys: 
+    Next, you need to boot from the USB drive. Reboot your computer and press one of the following keys to access the BIOS/UEFI: <br>
     <kbd>Esc</kbd>, <kbd>Enter</kbd>, <kbd>F9</kbd>, <kbd>Del</kbd>. 
-    This will get you into the BIOS/UEFI. If a menu with drives appeared, select your removable drive. If you see a menu of options, select Boot Menu or similar. From there, select your removable drive.
+    <br>
+    If a menu listing drives appears, select your removable drive. If a menu with boot options appears instead, select Boot Menu or a similar option, and then choose your USB drive.
   </p>
   <p>
-    Now you have booted the Redrose Linux Installer! Wait until it boots, it will do everything on its own until the installer shows up.
+    Once booted, the installer will start. Wait a moment while the system loads—the installer will handle most tasks automatically until the setup interface appears.
   </p>
   <p>
-    Follow the installer prompts. Dictionary:
+    Follow the on-screen instructions. Here's a quick reference for some terms you may encounter:
   </p>
   <ul>
-    <li><kbd>Username</kbd> - name of the user</li>
-    <li><kbd>Root</kbd> - Administrator</li>
-    <li><kbd>Console keymap</kbd> - keyboard layout (us, uk, sk, etc.)</li>
-    <li><kbd>Timezone</kbd> - your timezone in <strong>format Region/City</strong>. Example: Europe/Bratislava</li>
-    <li><kbd>Locale</kbd> - language (like en_US.UTF-8)</li>
+    <li><kbd>Username</kbd> - your personal user account name</li>
+    <li><kbd>Root</kbd> - the system administrator account</li>
+    <li><kbd>Console keymap</kbd> - your keyboard layout (e.g., us, uk, sk)</li>
+    <li><kbd>Timezone</kbd> - your timezone in Region/City format (e.g., Europe/Bratislava)</li>
+    <li><kbd>Locale</kbd> - system language setting (e.g., en_US.UTF-8)</li>
   </ul>
   <p>
-    From here on, the installer does everything by itself.
+    After completing these steps, the installer will finish the installation automatically.
   </p>
 </section>
+
 
 
 <center>
